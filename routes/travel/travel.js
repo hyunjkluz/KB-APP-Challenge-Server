@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('../../module/jwt.js');
 let travel = require('../../module/schema/travelSchema.js');
 
+//여행 계획 입력
 router.post('/', async (req, res) => {
     let token = req.headers.token;
 	let decoded = jwt.verify(token);

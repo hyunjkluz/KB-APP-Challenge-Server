@@ -23,7 +23,6 @@ router.post('/signup', async (req, res) => {
 });
 
 //로그인
-//수정 필요
 router.post('/signin', async (req, res) => {
     let phone = req.body.phone;
     let pw = req.body.pw;
@@ -45,7 +44,7 @@ router.post('/signin', async (req, res) => {
                 });
             } else {
                 if (user.pw === pw) {
-                    let token = jwt.sign(checkResult[0].user_idx);
+                    let token = jwt.sign(user._id);
 
                     res.status(200).send({
                         "responseMessage" : "Login Success",
