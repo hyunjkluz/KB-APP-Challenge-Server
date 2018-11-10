@@ -1,6 +1,6 @@
 ---
 applications:
-- name: Travel-Log
+- name: TraveLuck
   memory: 512M
   instances: 1
   random-route: false

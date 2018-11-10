@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
             });
         } else {
             res.status(200).send({
-               "responeMessage" : "Successfully Insert Travel And "
+                "responeMessage" : "Successfully Insert Travel And "
             });            
         }
     });

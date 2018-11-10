@@ -6,6 +6,7 @@ const jwt = require('../../module/jwt.js');
 //회원가입
 router.post('/signup', async (req, res) => {
     await user.create({
+        id : req.body.id,
         name: req.body.name,
         pw: req.body.pw,
         phone: req.body.phone
@@ -16,7 +17,7 @@ router.post('/signup', async (req, res) => {
             });
         } else {
             res.status(200).send({
-               "responseMessage" : "Successfully Registe User"
+                "responseMessage" : "Successfully Registe User"
             });            
         }
     });    
@@ -24,7 +25,7 @@ router.post('/signup', async (req, res) => {
 
 //로그인
 router.post('/signin', async (req, res) => {
-    let phone = req.body.phone;
+    let id = req.body.id;
     let pw = req.body.pw;
 
     if (!user_id ||!user_pw) {
@@ -33,7 +34,7 @@ router.post('/signin', async (req, res) => {
             "responseMessage" : "Null Value"
         });
     } else {
-        await user.find({ "phone" : phone}, async (err, user) => {
+        await user.find({ "id" : id}, async (err, user) => {
             if (err) {
                 res.status(500).send({
                     "responseMessage" : "Internal Server Error"
@@ -44,7 +45,8 @@ router.post('/signin', async (req, res) => {
                 });
             } else {
                 if (user.pw === pw) {
-                    let token = jwt.sign(user._id);
+                    let userId = user._id;
+                    let token = jwt.sign(userId);
 
                     res.status(200).send({
                         "responseMessage" : "Login Success",
