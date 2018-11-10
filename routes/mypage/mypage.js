@@ -8,7 +8,7 @@ let travel = require('../../module/schema/travelSchema.js');
 router.get('/', async (req, res) => {
     let token = req.headers.token;
     let decoded = jwt.verify(token);
-    let userId = decoded.userId;
+    let userId = decoded.user_idx;
 
     let lists = await travel.find({ userId : userId }, 
         {

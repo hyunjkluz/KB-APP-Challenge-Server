@@ -11,7 +11,7 @@ router.get('/:travelId', async (req, res) => {
             "responseMessage" : "Travel Not Found"
         });
     } else {
-        let histories = travels.history;
+        let histories = travels[0].history;
         let card = {
             "cnt" : 0,
             "total" : 0,
@@ -31,7 +31,8 @@ router.get('/:travelId', async (req, res) => {
             "history" : []
         }
 
-        for (var attr in histories) {
+        for (let i = 0; i < histories.length; i++) {
+            let attr = histories[i];
             if (attr.isIncome == 0) {   //지출일 때
                 if (attr.category == 0) {//현금일 때
                     cash.cnt += 1;
@@ -51,9 +52,9 @@ router.get('/:travelId', async (req, res) => {
         }
 
         let totalSum = card.total + cash.total + income.total;
-        card.percentage = (card.total / totalSum) * 100;
-        cash.percentage = (cash.total / totalSum) * 100;
-        income.percentage = (income.total / totalSum) * 100;
+        card.percentage = Math.floor((card.total / totalSum) * 100);
+        cash.percentage = Math.floor((cash.total / totalSum) * 100);
+        income.percentage = Math.floor((income.total / totalSum) * 100);
 
         res.status(200).send({
             "responseMessage" : "Succeddfully Get Data",
@@ -63,13 +64,5 @@ router.get('/:travelId', async (req, res) => {
         });
     }
 });
-
-
-
-
-
-
-
-
 
 module.exports = router;

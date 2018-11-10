@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('../module/jwt.js');
-let travel = require('../../module/schema/travelSchema.js');
+let travel = require('../module/schema/travelSchema');
 
 //두 날짜 차이 계산
 function dateDiff(_date1, _date2) {
@@ -30,26 +30,41 @@ router.get('/', async (req, res) => {
         });
     } else if (travels.length == 0) {
         res.status(201).send({      //등록된 여행이 하나도 없을 때
-            "responseMessage" : "Pleas e Add Travel"
+            "responseMessage" : "Please Add Travel"
         });
-    } else {                        //등록된 여행이 있을 때
+    } else {     //등록된 여행이 있을 때
         let newTravels = [];
         var now = new Date();
-        var todayAtMidn = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        let todayFlag = now.getFullYear() + now.getMonth() + now.getDate();
+        let newHistory = [];
 
-        for (var tvl in travels) {   //하나의 여행 계획에 대하여
+        for (let i = 0; i < travels.length; i++) {   //하나의 여행 계획에 대하여
+            let tvl = travels[i];
+            let start = tvl.start;
+            let startFlag = start.getFullYear() + start.getMonth() + start.getDate();
+            let end = tvl.end;
+            let endFlag = end.getFullYear() + end.getMonth() + end.getDate();
             let newTravelJson = new Object();
             let usageBudgetPercentage = 0;
 
-            if ((tvl.start).getTime() < todayAtMidn.getTime()) { //여행이 시작되었을 때
-                //총 지충 내역 계산
+            if ((startFlag <= todayFlag) && (todayFlag <= endFlag)) { //여행이 시작되었을 때
+                console.log("here1");
+                //총 지출 내역 계산
                 let totalUsage = 0;
-                for (let i = 0; i < (tvl.history).length; i++) {
-                    totalUsage += tvl.history[i].sum;
-                }
-                usageBudgetPercentage = (totalUsage / tvl.balence) * 100;
-
+                let addIncome = 0;
                 let histories = tvl.history;
+                
+                for (let i = 0; i < histories.length; i++) {
+                    if (histories[i].isIncome == 0) {
+                        totalUsage += histories[i].sum;
+                    } else {
+                        addIncome += histories[i].sum;
+                    }                   
+                }
+
+                usageBudgetPercentage = Math.floor((totalUsage / (tvl.balance + addIncome)) * 100);
+                console.log(usageBudgetPercentage);
+
                 let food = {
                     "category" : 0,
                     "total" : 0,
@@ -76,28 +91,28 @@ router.get('/', async (req, res) => {
                     "percentage" : 0
                 }
 
-                for (var attr in histories) {
-                    if (attr.isIncome == 0) {   //지출일 때
-                        if (attr.category == 0) {           //식/음료 일 때
-                            food.total += attr.sum;
-                        } else if (attr.category == 1) {    //쇼핑
-                            shop.total += attr.sum;
-                        } else if (attr.category == 2) {    //문화
-                            culture.total += attr.sum;
-                        } else if (attr.category == 3) {    //숙소
-                            acc.total += attr.sum;
+                for (let j = 0; j < histories.length; j++) {
+                    if (histories[j].isIncome == 0) {   //지출일 때
+                        if (histories[j].category == 0) {           //식/음료 일 때
+                            food.total += histories[j].sum;
+                        } else if (histories[j].category == 1) {    //쇼핑
+                            shop.total += histories[j].sum;
+                        } else if (histories[j].category == 2) {    //문화
+                            culture.total += histories[j].sum;
+                        } else if (histories[j].category == 3) {    //숙소
+                            acc.total += histories[j].sum;
                         } else {                            //항공
-                            flight.total += attr.sum;
+                            flight.total += histories[j].sum;
                         }
                     } else continue;
                 }
 
                 let totalSum = food.total + shop.total + culture.total + acc.total + flight.total;
-                food.percentage = (food.total / totalSum) * 100;
-                shop.percentage = (shop.total / totalSum) * 100;
-                culture.percentage = (culture.total / totalSum) * 100;
-                acc.percentage = (acc.total / totalSum) * 100;
-                flight.percentage = (flight.total / totalSum) * 100;
+                food.percentage = Math.floor((food.total / totalSum) * 100);
+                shop.percentage = Math.floor((shop.total / totalSum) * 100);
+                culture.percentage = Math.floor((culture.total / totalSum) * 100);
+                acc.percentage = Math.floor((acc.total / totalSum) * 100);
+                flight.percentage = Math.floor((flight.total / totalSum) * 100);        
 
                 let categories = [food, shop, culture, acc, flight];
                 let maxCate = categories[0];
@@ -120,7 +135,18 @@ router.get('/', async (req, res) => {
                     "maxCate" : maxCate
                 }
                 newTravels.push(newTravelJson);
-            } else {                    //여행이 시작 전일 때        
+            } else if (endFlag < todayFlag) {   //여행이 끝났을 때
+                let newHistoryJson = {
+                    "_id" : tvl._id,
+                    "title" : tvl.title,
+                    "country" : tvl.country,
+                    "diff" : dateDiff(new Date(), tvl.targetDate),
+                    "targetSum" : tvl.targetSum,
+                    "start" : tvl.start,
+                    "end" : tvl.end
+                }
+                newHistory.push(newHistoryJson);
+            } else {                    //여행이 시작 전일 때      
                 let newTravelJson = {
                     "_id" : tvl._id,
                     "title" : tvl.title,
@@ -133,23 +159,6 @@ router.get('/', async (req, res) => {
                     "maxCate" : null
                 }
                 newTravels.push(newTravelJson);
-            }
-        }
-
-        let newHistory = new Array();
-        for (var tvl in travels) {   //여행 히스토리 계산
-            
-            if ((tvl.end).getTime() < todayAtMidn.getTime()) { //여행이 시작되었을 때
-                let newHistoryJson = {
-                    "_id" : tvl._id,
-                    "title" : tvl.title,
-                    "country" : tvl.country,
-                    "diff" : dateDiff(new Date(), tvl.targetDate),
-                    "targetSum" : tvl.targetSum,
-                    "start" : tvl.start,
-                    "end" : tvl.end
-                }
-                newHistory.push(newHistoryJson);
             }
         }
 

@@ -11,16 +11,16 @@ function checkEmpty(attr) {
 }
 
 //여행 통계 : 예산대비
-router.get('/:travleId', async (req, res) => {
-    let travel = await travel.find({ _id : req.params.travelId });
+router.get('/:travelId', async (req, res) => {
+    let oneTravel = await travel.find({ _id : req.params.travelId });
 
-    if(!travel){
+    if(!oneTravel){
         res.status(404).send({
             "responseMessage" : "Travel Not Found"
         });
     } else {
-        let budget = travel.budget;     //여행 예산
-        let history = travel.history;
+        let budgets = oneTravel[0].budgets;     //여행 예산
+        let history = oneTravel[0].history;
 
         let food = {
             "budget" : 0,
@@ -53,7 +53,8 @@ router.get('/:travleId', async (req, res) => {
             "percentage" : 0
         }
 
-        for (var attr in history) {
+        for (let i = 0; i < history.length; i++) {
+            let attr = history[i];
             if (attr.isIncome == 0) {   //지출일 때
                 if (attr.category == 0) {           //식/음료 일 때
                     food.expenseTotal += attr.sum;
@@ -69,7 +70,8 @@ router.get('/:travleId', async (req, res) => {
             } else continue;
         }
 
-        for (var attr in budget) {
+        for (let i = 0; i < budgets.length; i++) {
+            let attr = budgets[i];
             if (attr.category == 0) {           //식/음료 일 때
                 food.budget = attr.sum;
                 food.term = attr.term;
@@ -88,11 +90,11 @@ router.get('/:travleId', async (req, res) => {
             }
         }
 
-        food.percentage = (food.expenseTotal / food.budget) * 100;
-        shop.percentage = (shop.expenseTotal / shop.budget) * 100;
-        culture.percentage = (culture.expenseTotal / culture.budget) * 100;
-        accommodation.percentage = (accommodation.expenseTotal / accommodation.budget) * 100;
-        flight.percentage = (flight.expenseTotal / flight.budget) * 100;
+        food.percentage = Math.floor((food.expenseTotal / food.budget) * 100);
+        shop.percentage = Math.floor((shop.expenseTotal / shop.budget) * 100);
+        culture.percentage = Math.floor((culture.expenseTotal / culture.budget) * 100);
+        accommodation.percentage = Math.floor((accommodation.expenseTotal / accommodation.budget) * 100);
+        flight.percentage = Math.floor((flight.expenseTotal / flight.budget) * 100);
 
         food = checkEmpty(food);
         shop = checkEmpty(shop);
@@ -113,11 +115,11 @@ router.get('/:travleId', async (req, res) => {
 
 //예산 등록 및 수정
 router.post('/', async (req, res) => {
-    // budget = {
+    // budgets = [{
     //     "categoty" : 0,
     //     "sum" : 0,
     //     "term" : 0
-    // }
+    // }]
     await travel.update(
         { _id : req.body.travelId }, { $set : req.body }, (err, output) => {
             if (err) {

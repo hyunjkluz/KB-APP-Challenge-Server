@@ -6,8 +6,11 @@ let travel = require('../../module/schema/travelSchema.js');
 //여행 계획 입력
 router.post('/', async (req, res) => {
     let token = req.headers.token;
-	let decoded = jwt.verify(token);
-    let userId = decoded.userId;
+    let decoded = jwt.verify(token);
+    console.log(decoded);
+    let userId = decoded.user_idx;
+
+    console.log(userId);
 
     await travel.create({
         userId : userId,
@@ -26,7 +29,7 @@ router.post('/', async (req, res) => {
             });
         } else {
             res.status(200).send({
-                "responeMessage" : "Successfully Insert Travel And "
+                "responeMessage" : "Successfully Insert Travel"
             });            
         }
     });

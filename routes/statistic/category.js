@@ -11,7 +11,7 @@ router.get('/:travelId', async (req, res) => {
             "responseMessage" : "Travel Not Found"
         });
     } else {
-        let histories = travels.history;
+        let histories = travels[0].history;
         let food = {
             "cnt" : 0,
             "total" : 0,
@@ -43,7 +43,8 @@ router.get('/:travelId', async (req, res) => {
             "history" : []
         }
 
-        for (var attr in histories) {
+        for (let i = 0; i < histories.length; i++) {
+            let attr = histories[i];
             if (attr.isIncome == 0) {   //지출일 때
                 if (attr.category == 0) {           //식/음료 일 때
                     food.cnt += 1;
@@ -70,11 +71,11 @@ router.get('/:travelId', async (req, res) => {
         }
 
         let totalSum = food.total + shop.total + culture.total + accommodation.total + flight.total;
-        food.percentage = (food.total / totalSum) * 100;
-        shop.percentage = (shop.total / totalSum) * 100;
-        culture.percentage = (culture.total / totalSum) * 100;
-        accommodation.percentage = (accommodation.total / totalSum) * 100;
-        flight.percentage = (flight.total / totalSum) * 100;
+        food.percentage = Math.floor((food.total / totalSum) * 100);
+        shop.percentage = Math.floor((shop.total / totalSum) * 100);
+        culture.percentage = Math.floor((culture.total / totalSum) * 100);
+        accommodation.percentage = Math.floor((accommodation.total / totalSum) * 100);
+        flight.percentage = Math.floor((flight.total / totalSum) * 100);
 
         res.status(200).send({
             "responseMessage" : "Succeddfully Get Data",

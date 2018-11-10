@@ -2,15 +2,14 @@ const jwt = require('jsonwebtoken');
 
 const secretKey = require('../config/secretKey.js').secret;
 
-
 module.exports = {
-  sign : function(user_idx) {
+  sign : function(userId) {
     const options = {
       algorithm : "HS256",
       expiresIn : 60 * 60 * 24 * 30 //30 days
     };
     const payload = {
-      user_idx : user_idx
+      userId : userId
     };
     let token = jwt.sign(payload, secretKey, options);
     return token;
