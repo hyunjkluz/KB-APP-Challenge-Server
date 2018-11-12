@@ -16,7 +16,7 @@ API 문서 : https://drive.google.com/open?id=1R3xawpKQGRNKueFD5Z2WRBhlBa6GxApGI
 
 
 ## 배포
-* [CYAON](https://www.clayon.io/) ( KB PAAS SYSTEM)
+* [CLAYON](https://www.clayon.io/) ( KB PAAS SYSTEM)
 * AWS EC2 - APP SERVER
 
 
