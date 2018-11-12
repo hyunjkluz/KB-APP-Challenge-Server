@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node_modules/babel-cli/bin/babel-node.js ./bin/www",
-    "start:dev" : "node ./bin/www"
+    "start" : "node ./bin/www"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -25,5 +24,9 @@
     "plugins": [
       "transform-async-to-generator"
     ]
+  },
+  "engines": {
+    "node": "10.10.0",
+    "npm": "6.4.1"
   }
 }

@@ -130,7 +130,7 @@ router.get('/', async (req, res) => {
                     "diff" : dateDiff(new Date(), tvl.targetDate),
                     "targetSum" : tvl.targetSum,
                     "balance" : tvl.balance,
-                    "balancePercentage" : (tvl.balance / tvl.targetSum) * 100,
+                    "balancePercentage" : Math.floor((tvl.balance / tvl.targetSum) * 100),
                     "usageBudgetPercentage" : usageBudgetPercentage,
                     "maxCate" : maxCate
                 }
@@ -154,7 +154,7 @@ router.get('/', async (req, res) => {
                     "diff" : dateDiff(new Date(), tvl.targetDate),
                     "targetSum" : tvl.targetSum,
                     "balance" : tvl.balance,
-                    "balancePercentage" : (tvl.balance / tvl.targetSum) * 100,
+                    "balancePercentage" : Math.floor((tvl.balance / tvl.targetSum) * 100),
                     "usageBudgetPercentage" : null,
                     "maxCate" : null
                 }
