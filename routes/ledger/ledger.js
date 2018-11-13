@@ -41,13 +41,18 @@ router.get('/:travelId/:date', async(req, res) => {
     }else {
         dateHis = dateHis[0].history;
 
-        let data = [];  //기분 날자에 해당하는 데이터만 받을 배열
+        let data = [];  //기준 날짜에 해당하는 데이터만 받을 배열
         for (let i = 0; i < dateHis.length; i++) {
-            let d = new Date(dateHis[i].date);
+            let d = dateHis[i].date;
+
+            if (!(dateHis[i].date instanceof Date)) {
+                d = new Date(dateHis[i].date)
+            }
+            
             //console.log(d);
             let dDate = d.getFullYear() + d.getMonth() + d.getDate();
             //console.log(dDate);
-            if (dDate == flagDate) {
+            if (dDate == flagDate) {    //기준 날짜와 같을 경우
                 data.push(dateHis[i]);
             }
         }

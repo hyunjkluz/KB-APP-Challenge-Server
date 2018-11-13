@@ -8,15 +8,19 @@ function dateDiff(_date1, _date2) {
     var diffDate_1 = _date1 instanceof Date ? _date1 : new Date(_date1);
     var diffDate_2 = _date2 instanceof Date ? _date2 : new Date(_date2);
 
-    diffDate_1 = new Date(diffDate_1.getFullYear(), diffDate_1.getMonth()+1, diffDate_1.getDate());
-    diffDate_2 = new Date(diffDate_2.getFullYear(), diffDate_2.getMonth()+1, diffDate_2.getDate());
+    let dd_1 = diffDate_1.getFullYear() + diffDate_1.getMonth() + diffDate_1.getDate();
+    let dd_2 = diffDate_2.getFullYear() + diffDate_2.getMonth() + diffDate_2.getDate();
 
-    var diff = Math.abs(diffDate_2.getTime() - diffDate_1.getTime());
-    diff = Math.ceil(diff / (1000 * 3600 * 24));
-
-    return diff;
+    console.log("지금 : " + dd_1 + ", 기준 : " + dd_2)
+    if (dd_1 <= dd_2) {
+        console.log("here")
+        return (dd_2 - dd_1);
+    } else {
+        return (dd_1 - dd_2);
+    }
 }
 
+//메인화면
 router.get('/', async (req, res) => {
     let token = req.headers.token;
 	let decoded = jwt.verify(token);
@@ -48,7 +52,7 @@ router.get('/', async (req, res) => {
             let usageBudgetPercentage = 0;
 
             if ((startFlag <= todayFlag) && (todayFlag <= endFlag)) { //여행이 시작되었을 때
-                console.log("here1");
+                console.log("travelStart : " + tvl.title);
                 //총 지출 내역 계산
                 let totalUsage = 0;
                 let addIncome = 0;
@@ -63,8 +67,6 @@ router.get('/', async (req, res) => {
                 }
 
                 usageBudgetPercentage = Math.floor((totalUsage / (tvl.balance + addIncome)) * 100);
-                console.log(usageBudgetPercentage);
-
                 let food = {
                     "category" : 0,
                     "total" : 0,
@@ -136,22 +138,27 @@ router.get('/', async (req, res) => {
                 }
                 newTravels.push(newTravelJson);
             } else if (endFlag < todayFlag) {   //여행이 끝났을 때
+                console.log("travelEnd : " + tvl.title);
+                
                 let newHistoryJson = {
                     "_id" : tvl._id,
                     "title" : tvl.title,
                     "country" : tvl.country,
-                    "diff" : dateDiff(new Date(), tvl.targetDate),
+                    "diff" : 0,
                     "targetSum" : tvl.targetSum,
                     "start" : tvl.start,
                     "end" : tvl.end
                 }
                 newHistory.push(newHistoryJson);
-            } else {                    //여행이 시작 전일 때      
+            } else {                    //여행이 시작 전일 때  
+                console.log("travelBefore : " + tvl.title);    
+                let diff = dateDiff(new Date(), tvl.targetDate)
+
                 let newTravelJson = {
                     "_id" : tvl._id,
                     "title" : tvl.title,
                     "country" : tvl.country,
-                    "diff" : dateDiff(new Date(), tvl.targetDate),
+                    "diff" : diff,
                     "targetSum" : tvl.targetSum,
                     "balance" : tvl.balance,
                     "balancePercentage" : Math.floor((tvl.balance / tvl.targetSum) * 100),
