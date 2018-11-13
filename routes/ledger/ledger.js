@@ -60,31 +60,37 @@ router.get('/:travelId/:date', async(req, res) => {
 
 //지출 + 소비 내역 추가
 router.post('/', function (req, res, next) {
-    let history = {
-        isIncome : req.body.isIncome,
-        title : req.body.title,
-        sum : req.body.sum,
-        unit : req.body.unit,
-        category : req.body.category,
-        payment : req.body.payment,
-        date : new Date(req.body.date),
-        latitude : req.body.latitude,
-        longitude : req.body.longitude
-    }
-
-    travel.update(
-        { _id : req.body.travelId},{ $push : { "history" : history}}, function (err, histories) {
-            if (err) {
-                res.status(500).send({
-                    "responseMessage" : "Internal Server Error : Update"
-                });
-            } else {
-                res.status(200).send({
-                    "responseMessage" : "Successfully Insert History"
-                });
-            }
+    if (!req.body.travelId) {
+        res.status(403).send({
+            "responseMessage" : "Null Value(Travel ID)"
+        });
+    } else {
+        let history = {
+            isIncome : req.body.isIncome,
+            title : req.body.title,
+            sum : req.body.sum,
+            unit : req.body.unit,
+            category : req.body.category,
+            payment : req.body.payment,
+            date : new Date(req.body.date),
+            latitude : req.body.latitude,
+            longitude : req.body.longitude
         }
-    );
+
+        travel.update(
+            { _id : req.body.travelId},{ $push : { "history" : history}}, function (err, histories) {
+                if (err) {
+                    res.status(500).send({
+                        "responseMessage" : "Internal Server Error : Update"
+                    });
+                } else {
+                    res.status(200).send({
+                        "responseMessage" : "Successfully Insert History"
+                    });
+                }
+            }
+        );
+    }
 });
 
 //지출 + 소비 내역 수정
