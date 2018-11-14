@@ -7,8 +7,7 @@
 
 ## Description
 
-- 여행 초보자의 취향에 맞는 여행 계획을 전문가가 직접 작성할 수 있는 **트레블 메이커**
-- 누구든 여행 전문가가 되어보고, 나만의 여행 전문가를 직접 찾아 특별한 자유 여행 계획을 받아볼 수 있는 여행 플랫폼
+-  **TraveLuck**
 
 * 프로젝트 기간 : 2018년 11월 5일 ~ 2018년 11월 19일
 * **API** : https://drive.google.com/open?id=1R3xawpKQGRNKueFD5Z2WRBhlBa6GxApGINF83aTWlbo
