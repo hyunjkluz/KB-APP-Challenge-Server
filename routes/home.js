@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('../module/jwt.js');
 let travel = require('../module/schema/travelSchema');
+let ment = require('../module/schema/mentSchema');
 
 //두 날짜 차이 계산
 function dateDiff(_date1, _date2) {
@@ -18,6 +19,11 @@ function dateDiff(_date1, _date2) {
     } else {
         return (dd_1 - dd_2);
     }
+}
+
+async function chooseMent(country) {
+    var ments = await ment.find({country : country});
+    return ments[Math.floor(Math.random() * (ments.length - 0)) + 0].ment;
 }
 
 //메인화면
@@ -50,8 +56,9 @@ router.get('/', async (req, res) => {
             let endFlag = end.getFullYear() + end.getMonth() + end.getDate();
             let newTravelJson = new Object();
             let usageBudgetPercentage = 0;
+            let countryMent = await chooseMent(tvl.country);
 
-            if ((startFlag <= todayFlag) && (todayFlag <= endFlag)) { //여행이 시작되었을 때
+            if ((startFlag <= todayFlag) && (todayFlag <= endFlag)) { //여행이 중일때
                 console.log("travelStart : " + tvl.title);
                 //총 지출 내역 계산
                 let totalUsage = 0;
@@ -130,6 +137,7 @@ router.get('/', async (req, res) => {
                     "title" : tvl.title,
                     "country" : tvl.country,
                     "diff" : dateDiff(new Date(), tvl.targetDate),
+                    "ment" : countryMent,
                     "targetSum" : tvl.targetSum,
                     "balance" : tvl.balance,
                     "balancePercentage" : Math.floor((tvl.balance / tvl.targetSum) * 100),
@@ -159,6 +167,7 @@ router.get('/', async (req, res) => {
                     "title" : tvl.title,
                     "country" : tvl.country,
                     "diff" : diff,
+                    "ment" : countryMent,
                     "targetSum" : tvl.targetSum,
                     "balance" : tvl.balance,
                     "balancePercentage" : Math.floor((tvl.balance / tvl.targetSum) * 100),
