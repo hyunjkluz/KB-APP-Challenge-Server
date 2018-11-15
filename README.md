@@ -1,36 +1,22 @@
 # Project : TraveLuck Server
 
-* 2018 SOPT x KB APP Challenge
+- 2018 SOPT x KB APP Challenge
 
-
-# Project 정보
-- 팀명 : 
-- 팀장명 : 이름(이메일주소)
-- 팀원명 : 이름(<이메일주소>), <이름>(<이메일주소>)..
-- 프로젝트 설명 : 간단히 작성
-- 어플리케이션 구성 : Mobile App, Server..
-
-
-# Server가 있을 경우 하기 작성
-- 운영기반 : clayon platform PAS, aws
-- 사용서비스 : clayon MySQL V2, clayon App Autoscaler, aws rds postgre service 
 
 
 ## Description
 
--  **TraveLuck**
+- 팀명 : **TraveLuck**
 
-* 프로젝트 기간 : 2018년 11월 5일 ~ 2018년 11월 19일
-* **API** : https://drive.google.com/open?id=1R3xawpKQGRNKueFD5Z2WRBhlBa6GxApGINF83aTWlbo
+- 프로젝트 기간 : 2018년 11월 5일 ~ 2018년 11월 19일
+- **API** : https://drive.google.com/open?id=1R3xawpKQGRNKueFD5Z2WRBhlBa6GxApGINF83aTWlbo
 
 
 
 ## DB
 
-* NoSQL
-
-* MongoDB
-
+- NoSQL
+- MongoDB
 
 
 
@@ -56,15 +42,15 @@
 
 모든 소스코드는 visual studio + Window 10 + Node.js 8 환경에서 작성되었습니다.
 
-* Node.js의 Async/Await을 사용해 (Promise) 비동기 제어를 하고 있습니다.
-* Node.js의 버전을 7.6 이상으로 유지해햐 합니다.
+- Node.js의 Async/Await을 사용해 (Promise) 비동기 제어를 하고 있습니다.
+- Node.js의 버전을 7.6 이상으로 유지해야 합니다.
 
 
 
 ## 배포
 
-- [CLAYON](https://www.clayon.io/) ( KB PAAS SYSTEM)
-- mLab : MongoDB
+- 운영기반 : [clayon platform PAS](https://www.clayon.io/)
+- 사용서비스 : clayon App Autoscaler, [mLab](https://mlab.com/)
 
 
 
@@ -82,9 +68,10 @@
 
 ## 개발자
 
-* **김현진** ([hyunjkluz](https://github.com/hyunjkluz)) : 작성자
+- **김현진** ([hyunjkluz](https://github.com/hyunjkluz)) : 작성자
+
 
 
 ## 연관 프로젝트
 
-* iOS : 추후 링킬 할 예정
+- iOS : 추후 링킬 할 예정
