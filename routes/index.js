@@ -22,4 +22,7 @@ router.use('/statistic', require('./statistic/index.js'));
 //여행 히스토리
 router.use('/history', require('./history/history.js'));
 
+//여행 히스토리
+router.use('/share', require('./share/share.js'));
+
 module.exports = router;
