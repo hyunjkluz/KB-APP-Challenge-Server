@@ -3,6 +3,17 @@
 * 2018 SOPT x KB APP Challenge
 
 
+# Project 정보
+- 팀명 : 
+- 팀장명 : 이름(이메일주소)
+- 팀원명 : 이름(<이메일주소>), <이름>(<이메일주소>)..
+- 프로젝트 설명 : 간단히 작성
+- 어플리케이션 구성 : Mobile App, Server..
+
+
+# Server가 있을 경우 하기 작성
+- 운영기반 : clayon platform PAS, aws
+- 사용서비스 : clayon MySQL V2, clayon App Autoscaler, aws rds postgre service 
 
 
 ## Description
