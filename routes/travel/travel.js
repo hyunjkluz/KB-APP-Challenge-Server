@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
     let token = req.headers.token;
     let decoded = jwt.verify(token);
     console.log(decoded);
-    let userId = decoded.user_idx;
+    let userId = decoded.userId;
 
     console.log(userId);
 

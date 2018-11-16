@@ -80,7 +80,7 @@ router.get('/:travelId', async (req, res) => {
         res.status(200).send({
             "responseMessage" : "Succeddfully Get Data",
             "title" : travels[0].title,
-            "balance" : travels[0].balance,
+            "balance" : travels[0].targetSum,
             "start" : travels[0].start,
             "end" : travels[0].end,
             "food" : food,

@@ -29,9 +29,9 @@ async function chooseMent(country) {
 //메인화면
 router.get('/', async (req, res) => {
     let token = req.headers.token;
-	let decoded = jwt.verify(token);
-    let userId = decoded.user_idx;
-
+    let decoded = jwt.verify(token);
+    let userId = decoded.userId;
+    
     let travels = await travel.find({ userId : userId });
 
     if (!travels) {
