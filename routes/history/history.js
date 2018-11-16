@@ -49,23 +49,23 @@ router.get('/:travelId', async (req, res) => {
                 if (attr.category == 0) {           //식/음료 일 때
                     food.cnt += 1;
                     food.total += attr.sum;
-                    food.history.push(attr)
+                    food.history.unshift(attr)
                 } else if (attr.category == 1) {    //쇼핑
                     shop.cnt += 1;
                     shop.total += attr.sum;
-                    shop.history.push(attr)
+                    shop.history.unshift(attr)
                 } else if (attr.category == 2) {    //문화
                     culture.cnt += 1;
                     culture.total += attr.sum;
-                    culture.history.push(attr)
+                    culture.history.unshift(attr)
                 } else if (attr.category == 3) {    //숙소
                     accommodation.cnt += 1;
                     accommodation.total += attr.sum;
-                    accommodation.history.push(attr)
+                    accommodation.history.unshift(attr)
                 } else {                            //항공
                     flight.cnt += 1;
                     flight.total += attr.sum;
-                    flight.history.push(attr)
+                    flight.history.unshift(attr)
                 }
             } else continue;
         }

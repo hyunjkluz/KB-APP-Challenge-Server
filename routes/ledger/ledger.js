@@ -15,9 +15,15 @@ router.get('/:travelId', async(req, res) => {
             "responseMessage" : "Travel Not Found"
         });
     }else {
+        let printHistory = new Array();
+
+        for (let i = history[0].history.length; i >= 0 ; i--) {
+            printHistory.push(history[0].history[i]);
+        }
+
         res.status(200).send({
             "responseMessage" : "Successfully Get Travel",
-            "history" : history[0].history
+            "history" : printHistory
         });
     }
 });
@@ -53,7 +59,7 @@ router.get('/:travelId/:date', async(req, res) => {
             let dDate = d.getFullYear() + d.getMonth() + d.getDate();
             //console.log(dDate);
             if (dDate == flagDate) {    //기준 날짜와 같을 경우
-                data.push(dateHis[i]);
+                data.unshift(dateHis[i]);
             }
         }
         res.status(200).send({
