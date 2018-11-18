@@ -15,15 +15,15 @@ router.get('/:travelId', async(req, res) => {
             "responseMessage" : "Travel Not Found"
         });
     }else {
-        let printHistory = new Array();
+        let printHistory = history[0].history
 
-        for (let i = history[0].history.length; i >= 0 ; i--) {
-            printHistory.push(history[0].history[i]);
-        }
+        // for (let i = history[0].history.length; i >= 0 ; i--) {
+        //     printHistory.push(history[0].history[i]);
+        // }
 
         res.status(200).send({
             "responseMessage" : "Successfully Get Travel",
-            "history" : printHistory
+            "history" : printHistory.reverse()
         });
     }
 });
