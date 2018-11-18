@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
     let decoded = jwt.verify(token);
     let userId = decoded.userId;
 
-    if (! req.body.start || ! req.body.end || ! req.body.targetDay || ! req.body.accountNumber) {
+    if (!req.body.start || !req.body.end || !req.body.targetDay || !req.body.accountNumber) {
         res.status(400).send({
             "statusCode" : 400,
             "responseMessage" : "Null Value"
