@@ -42,6 +42,8 @@ router.post('/', async (req, res) => {
     }
 });
 
-
+router.get('/:travelId', async (req, res) => {
+    
+});
 
 module.exports = router;
