@@ -12,27 +12,34 @@ router.post('/', async (req, res) => {
 
     console.log(userId);
 
-    await travel.create({
-        userId : userId,
-        title : req.body.title,
-        country : req.body.country,
-        start : req.body.start,
-        end : req.body.end,
-        targetDay : req.body.targetDay,
-        targetSum : req.body.targetSum,
-        accountNumber : req.body.accountNumber,
-        balance : req.body.balance
-    }, async (err, travels) => {
-        if (err) {
-            res.status(405).send({
-                "responeMessage" : "Internal Server Error : Insert"
-            });
-        } else {
-            res.status(200).send({
-                "responeMessage" : "Successfully Insert Travel"
-            });            
-        }
-    });
+    if (!start || !end || !targetDay || !accountNumber) {
+        res.status(400).send({
+            "statusCode" : 400,
+            "responseMessage" : "Null Value"
+        });
+    } else {
+        await travel.create({
+            userId : userId,
+            title : req.body.title,
+            country : req.body.country,
+            start : req.body.start,
+            end : req.body.end,
+            targetDay : req.body.targetDay,
+            targetSum : req.body.targetSum,
+            accountNumber : req.body.accountNumber,
+            balance : req.body.balance
+        }, async (err, travels) => {
+            if (err) {
+                res.status(405).send({
+                    "responeMessage" : "Internal Server Error : Insert"
+                });
+            } else {
+                res.status(200).send({
+                    "responeMessage" : "Successfully Insert Travel"
+                });            
+            }
+        });
+    }
 });
 
 

@@ -75,6 +75,11 @@ router.post('/', function (req, res, next) {
         res.status(403).send({
             "responseMessage" : "Null Value(Travel ID)"
         });
+    } else if (!sum || !category || !date || !payment) {
+        res.status(400).send({
+            "statusCode" : 400,
+            "responseMessage" : "Null Value"
+        });
     } else {
         let history = {
             isIncome : req.body.isIncome,
