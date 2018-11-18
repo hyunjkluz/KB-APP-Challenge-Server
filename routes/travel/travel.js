@@ -7,12 +7,9 @@ let travel = require('../../module/schema/travelSchema.js');
 router.post('/', async (req, res) => {
     let token = req.headers.token;
     let decoded = jwt.verify(token);
-    console.log(decoded);
     let userId = decoded.userId;
 
-    console.log(userId);
-
-    if (!start || !end || !targetDay || !accountNumber) {
+    if (! req.body.start || ! req.body.end || ! req.body.targetDay || ! req.body.accountNumber) {
         res.status(400).send({
             "statusCode" : 400,
             "responseMessage" : "Null Value"
