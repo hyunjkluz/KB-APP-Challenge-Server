@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('../module/jwt.js');
+const calc = require('../module/calc');
 let travel = require('../module/schema/travelSchema');
 let ment = require('../module/schema/mentSchema');
 
@@ -73,58 +74,14 @@ router.get('/', async (req, res) => {
                     }                   
                 }
 
-                usageBudgetPercentage = Math.floor((totalUsage / (tvl.balance + addIncome)) * 100);
-                let food = {
-                    "category" : 0,
-                    "total" : 0,
-                    "percentage" : 0
-                }
-                let shop = {
-                    "category" : 1,
-                    "total" : 0,
-                    "percentage" : 0
-                }
-                let culture = {
-                    "category" : 2,
-                    "total" : 0,
-                    "percentage" : 0
-                }
-                let acc = {
-                    "category" : 3,
-                    "total" : 0,
-                    "percentage" : 0
-                }
-                let flight = {
-                    "category" : 4,
-                    "total" : 0,
-                    "percentage" : 0
-                }
+                usageBudgetPercentage = Math.floor((totalUsage / (tvl.balance + addIncome)) * 100);        
 
-                for (let j = 0; j < histories.length; j++) {
-                    if (histories[j].isIncome == 0) {   //지출일 때
-                        if (histories[j].category == 0) {           //식/음료 일 때
-                            food.total += histories[j].sum;
-                        } else if (histories[j].category == 1) {    //쇼핑
-                            shop.total += histories[j].sum;
-                        } else if (histories[j].category == 2) {    //문화
-                            culture.total += histories[j].sum;
-                        } else if (histories[j].category == 3) {    //숙소
-                            acc.total += histories[j].sum;
-                        } else {                            //항공
-                            flight.total += histories[j].sum;
-                        }
-                    } else continue;
-                }
-
-                let totalSum = food.total + shop.total + culture.total + acc.total + flight.total;
-                food.percentage = Math.floor((food.total / totalSum) * 100);
-                shop.percentage = Math.floor((shop.total / totalSum) * 100);
-                culture.percentage = Math.floor((culture.total / totalSum) * 100);
-                acc.percentage = Math.floor((acc.total / totalSum) * 100);
-                flight.percentage = Math.floor((flight.total / totalSum) * 100);        
-
-                let categories = [food, shop, culture, acc, flight];
+                let categories = calc.category(histories)
                 let maxCate = categories[0];
+
+                //필요한 정보만 남기고 제거
+                delete maxCate.history
+                delete maxCate.cnt
 
                 //최대 지출 카테고리 선택
                 for (let i = 1; i < categories.length; i++) {
@@ -132,6 +89,7 @@ router.get('/', async (req, res) => {
                         maxCate = categories[i];
                     }
                 }
+                delete maxCate.history
                 newTravelJson = {
                     "_id" : tvl._id,
                     "title" : tvl.title,
