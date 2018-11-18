@@ -75,7 +75,7 @@ router.post('/', function (req, res, next) {
         res.status(403).send({
             "responseMessage" : "Null Value(Travel ID)"
         });
-    } else if (!sum || !category || !date || !payment) {
+    } else if (!req.body.sum || !req.body.date) {
         res.status(400).send({
             "statusCode" : 400,
             "responseMessage" : "Null Value"
